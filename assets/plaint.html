@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>고소장 작성하기</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+    body {
+      font-family: 'Inter', 'Malgun Gothic', sans-serif;
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .page-title-wrapper { /* 페이지 전체 제목과 도움말 버튼을 감싸는 div */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    .main-title {
+      color: #E0E7FF; /* indigo-100 */
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+      font-size: 2.25rem; /* text-4xl */
+      line-height: 2.5rem;
+      font-weight: 800; /* extrabold */
+      margin: 0; /* 기본 마진 제거 */
+    }
+    .title-help-button { /* 메인 제목 옆 도움말 버튼 스타일 (start_page_html과 유사하게) */
+        background-color: rgba(255, 255, 255, 0.15);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s ease;
+        margin-left: 10px;
+    }
+    .title-help-button:hover {
+        background-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .controls-section-title { /* 컨트롤 패널 내부의 "텍스트 입력" 제목 */
+      text-align: center;
+      margin-bottom: 20px;
+      color: #E0E7FF;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+      font-size: 1.875rem; /* text-3xl */
+      font-weight: 700; /* bold */
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    @media (min-width: 768px) {
+        .container {
+            flex-direction: row;
+        }
+    }
+
+    .canvas-wrapper, .controls-wrapper {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .canvas-wrapper {
+      flex: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    canvas {
+      border: 1px solid rgba(255,255,255,0.3);
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      background-color: #fff;
+    }
+    .controls-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .controls-wrapper label {
+      display: block;
+      margin: 12px 0 6px;
+      font-weight: bold;
+      color: #D1D5DB;
+    }
+    .controls-wrapper input[type="text"], .controls-wrapper textarea {
+      width: 100%;
+      padding: 12px;
+      font-size: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 6px;
+      box-sizing: border-box;
+      resize: vertical;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #F3F4F6;
+    }
+    .controls-wrapper input::placeholder, .controls-wrapper textarea::placeholder {
+        color: #9CA3AF;
+    }
+    #input3 { min-height: 120px; }
+    #input4 { min-height: 180px; }
+
+    .consent-checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        margin-top: 15px;
+        margin-bottom: 10px;
+    }
+    .consent-checkbox-wrapper input[type="checkbox"] {
+        width: auto;
+        margin-right: 8px;
+        accent-color: #EC4899;
+    }
+    .consent-checkbox-wrapper label {
+        font-weight: normal;
+        color: #E5E7EB;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .controls-wrapper button#saveBtn {
+      margin-top: 10px;
+      padding: 12px;
+      font-size: 16px;
+      background-color: #EC4899;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.1s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .controls-wrapper button#saveBtn:hover {
+        background-color: #DB2777;
+        transform: translateY(-1px);
+    }
+    .controls-wrapper button#saveBtn:active {
+        transform: translateY(0px);
+    }
+    .controls-wrapper button#saveBtn:disabled {
+      background: rgba(200, 200, 200, 0.5);
+      color: rgba(255,255,255,0.5);
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600">
+<div class="page-title-wrapper">
+    <h1 class="main-title">고소장 작성하기</h1>
+    <button id="pageHelpBtn" class="title-help-button" title="도움말">!</button>
+  </div>
+  <div class="container">
+    <div class="canvas-wrapper">
+      <canvas id="myCanvas"></canvas>
+    </div>
+    <div class="controls-wrapper">
+      <div class="controls-section-title">
+        <h2>텍스트 입력</h2>
+      </div>
+      <label for="input1">1. 고소인</label>
+      <input type="text" id="input1" maxlength="9" placeholder="이름을 입력하세요. 예: 이춘향 (최대 9자)">
+
+      <label for="input2">2. 피고소인</label>
+      <input type="text" id="input2" maxlength="9" placeholder="이름을 입력하세요. 예: 이몽룡 (최대 9자)">
+
+      <label for="input3">3. 고소취지</label>
+      <textarea id="input3" maxlength="24" placeholder="죄명을 입력하세요. 예: 절도죄 (최대 24자)"></textarea>
+
+      <label for="input4">4. 범죄사실 및 고소이유</label>
+      <textarea id="input4" maxlength="500" placeholder="구체적인 범죄행각을 입력하세요. 예: 제 마음을 훔쳤습니다. (최대 500자)"></textarea>
+
+      <div class="consent-checkbox-wrapper">
+        <input type="checkbox" id="consentCheckbox">
+        <label for="consentCheckbox">작성하신 고소장은 단순 체험용 예제이며, 이를 악용해서는 안 된다는 것에 동의하십니까?</label>
+      </div>
+
+      <button id="saveBtn" disabled>이미지 저장</button>
+    </div>
+  </div>
+
+  <script>
+
+    function createModal(title, message, options = {}) {
+            const { confirmText = '확인', onClose, onConfirm } = options;
+
+            // --- Overlay Element ---
+            const overlay = document.createElement('div');
+            overlay.className = 'fixed inset-0 bg-black bg-opacity-80 backdrop-blur-lg flex items-center justify-center p-4 z-[9999] transition-opacity duration-500 ease-in-out';
+            // `bg-opacity-80`, `backdrop-blur-lg` 효과 강화, `duration-500` 오버레이 전환 속도 조정
+
+            // --- Modal Box ---
+            const box = document.createElement('div');
+            box.className = 'bg-white text-gray-800 rounded-3xl shadow-2xl p-7 md:p-10 w-full max-w-lg modal-animate-open transform'; // max-w-lg로 약간 넓힘, rounded-3xl, 패딩 증가
+            // `modal-animate-open` 열기 애니메이션 클래스 적용
+
+            // --- Close Button (X icon) ---
+            const closeButton = document.createElement('button');
+            closeButton.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            `;
+            closeButton.className = 'absolute top-6 right-6 text-gray-400 hover:text-red-500 close-button-animate'; // `close-button-animate` 클래스 추가, 아이콘 크기 및 위치 조정
+            closeButton.addEventListener('click', () => closeModal(false));
+
+            // --- Title ---
+            const h2 = document.createElement('h2');
+            h2.textContent = title;
+            h2.className = 'text-3xl md:text-4xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 text-center';
+            // 폰트 크기 및 두께 증가, 그라데이션 텍스트 효과 추가
+
+            // --- Message ---
+            const p = document.createElement('p');
+            message.split('\n').forEach((line, i, arr) => {
+                p.append(document.createTextNode(line));
+                if (i < arr.length - 1) p.append(document.createElement('br'));
+            });
+            p.className = 'text-base md:text-lg text-gray-600 mb-10 modal-content max-h-[45vh] overflow-y-auto px-2 text-center leading-relaxed selection:bg-purple-200';
+            // 텍스트 크기 증가, 마진 증가, `max-h` 조정, 선택 시 배경색 변경
+
+            // --- Button Container ---
+            const buttonContainer = document.createElement('div');
+            buttonContainer.className = 'flex justify-center mt-4';
+
+            // --- Confirm Button ---
+            const confirmBtn = document.createElement('button');
+            confirmBtn.textContent = confirmText;
+            confirmBtn.className = 'w-full max-w-sm px-10 py-4 bg-gradient-to-r from-purple-600 to-pink-500 text-white text-lg font-bold rounded-xl shadow-lg hover:from-purple-700 hover:to-pink-600 focus:outline-none focus:ring-4 focus:ring-pink-400 focus:ring-opacity-75 animated-button transform hover:-translate-y-1';
+            // 그라데이션 배경, 폰트 두께 증가, 패딩 증가, 호버 시 살짝 위로 이동 효과 추가
+
+            confirmBtn.addEventListener('click', () => closeModal(true));
+
+            // --- DOM Assembly ---
+            box.appendChild(closeButton);
+            box.appendChild(h2);
+            box.appendChild(p);
+            buttonContainer.appendChild(confirmBtn);
+            box.appendChild(buttonContainer);
+            overlay.appendChild(box);
+            document.body.appendChild(overlay);
+            document.body.style.overflow = 'hidden';
+
+            overlay.style.opacity = '0';
+            requestAnimationFrame(() => {
+                overlay.style.opacity = '1';
+            });
+
+
+            // --- Close Handler ---
+            function closeModal(isConfirmed) {
+                overlay.style.opacity = '0';
+                box.classList.remove('modal-animate-open');
+                box.classList.add('modal-animate-close');
+
+                setTimeout(() => {
+                    if (overlay.parentNode === document.body) {
+                         document.body.removeChild(overlay);
+                    }
+                    document.body.style.overflow = '';
+
+                    if (isConfirmed && typeof onConfirm === 'function') {
+                        onConfirm();
+                    }
+
+                    if (typeof onClose === 'function') {
+                        onClose(isConfirmed);
+                    }
+                }, 400); // 닫기 애니메이션 시간 (0.4s)
+            }
+
+            // --- Event Listener for Overlay Click ---
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    closeModal(false);
+                }
+            });
+
+            // --- Event Listener for Escape Key ---
+            let escapeKeyListenerActive = true;
+            function escapeKeyListener(e) {
+                if (escapeKeyListenerActive && e.key === 'Escape') {
+                    closeModal(false);
+                    escapeKeyListenerActive = false;
+                    document.removeEventListener('keydown', escapeKeyListener);
+                }
+            }
+            document.addEventListener('keydown', escapeKeyListener);
+
+            return {
+                close: () => closeModal(false)
+            };
+        }
+
+    const boxesTemplate = [
+      { coords: [[190,223],[463,282]], text: '', align_h:'center', align_v:'middle', font_size:28 },
+      { coords: [[656,223],[927,282]], text: '', align_h:'center', align_v:'middle', font_size:28 },
+      { coords: [[52,359],[930,477]], text: '', align_h:'left', align_v:'middle', font_size:32 },
+      { coords: [[52,530],[930,754]], text: '', align_h:'left', align_v:'top', font_size:32 },
+      { coords: [[270,764],[357,802]], text: '', align_h:'right', align_v:'top', font_size:24 },
+      { coords: [[406,764],[450,802]], text: '', align_h:'right', align_v:'top', font_size:24 },
+      { coords: [[522,764],[555,802]], text: '', align_h:'right', align_v:'top', font_size:24 },
+      { coords: [[398,802],[589,841]], text: '', align_h:'center', align_v:'bottom', font_size:26 }
+    ];
+
+    const dynamicFontMap4 = [
+      { size:32, maxChars:162 }, { size:28, maxChars:217 }, { size:24, maxChars:288 },
+      { size:20, maxChars:387 }, { size:18, maxChars:480 }, { size:17, maxChars:500 }
+    ];
+    const dynamicFontMap8 = [
+      { size:32, maxChars:5 }, { size:28, maxChars:6 }, { size:23, maxChars:8 }, { size:21, maxChars:9 }
+    ];
+
+    function wrapText(ctx, text, maxWidth) {
+      const lines = [];
+      text.split('\n').forEach(p => {
+        let line = '';
+        for (let char of p) {
+          const test = line + char;
+          if (ctx.measureText(test).width <= maxWidth) line = test;
+          else { lines.push(line); line = char; }
+        }
+        lines.push(line);
+      });
+      return lines;
+    }
+
+    function drawTextsInBoxes(ctx, items) {
+      items.forEach((item, idx) => {
+        const [[x1,y1],[x2,y2]] = item.coords;
+        const xMin = Math.min(x1,x2), yMin = Math.min(y1,y2);
+        const W = Math.abs(x2-x1), H = Math.abs(y2-y1);
+        let fontSize = item.font_size;
+        if (idx === 3) for (let m of dynamicFontMap4) if (item.text.length <= m.maxChars) { fontSize = m.size; break; }
+        if (idx === 7) for (let m of dynamicFontMap8) if (item.text.length <= m.maxChars) { fontSize = m.size; break; }
+
+        ctx.font = `${fontSize}px Malgun Gothic`;
+        ctx.textBaseline = 'top';
+        ctx.fillStyle = '#000000';
+
+        const lines = wrapText(ctx, item.text, W);
+        const lineH = fontSize * 1.2;
+        const totalH = lines.length * lineH;
+        const startY = item.align_v === 'middle'
+          ? yMin + (H - totalH)/2
+          : item.align_v === 'bottom'
+            ? yMin + H - totalH
+            : yMin;
+        lines.forEach((line,i) => {
+          const w = ctx.measureText(line).width;
+          const x = item.align_h === 'center'
+            ? xMin + (W - w)/2
+            : item.align_h === 'right'
+              ? xMin + W - w
+              : xMin;
+          ctx.fillText(line, x, startY + i*lineH);
+        });
+      });
+    }
+
+    window.onload = () => {
+      const canvas = document.getElementById('myCanvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      img.src = 'image.jpg';
+      img.onerror = () => {
+          console.warn("배경 이미지를 로드할 수 없습니다. 'image.jpg' 경로를 확인하세요. 기본 크기로 캔버스를 초기화합니다.");
+          canvas.width = 982;
+          canvas.height = 893;
+          ctx.fillStyle = '#e0e0e0';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = '#555';
+          ctx.font = '20px Malgun Gothic';
+          ctx.textAlign = 'center';
+          ctx.fillText('배경 이미지 로드 실패', canvas.width / 2, canvas.height / 2);
+          canvas.setAttribute('data-img-error', 'true');
+          redraw();
+      };
+
+      const inputs = ['input1','input2','input3','input4'].map(id => document.getElementById(id));
+      const saveBtn = document.getElementById('saveBtn');
+      const consentCheckbox = document.getElementById('consentCheckbox');
+      const helpBtn = document.getElementById('pageHelpBtn'); // 도움말 버튼 요소
+
+      // URL에서 'category' 파라미터 가져오기
+      const urlParams = new URLSearchParams(window.location.search);
+      const categoryParam = urlParams.get('category');
+
+      if (categoryParam) {
+        inputs[2].value = decodeURIComponent(categoryParam).slice(0,24);
+      }
+
+      function updateSaveButton() {
+        const allInputsFilled = inputs.every(i => i.value.trim());
+        const consentGiven = consentCheckbox.checked;
+        saveBtn.disabled = !(allInputsFilled && consentGiven);
+      }
+
+      function getBoxes() {
+        const now = new Date();
+        const boxes = boxesTemplate.map(b => ({ ...b }));
+        var crime = inputs[2].value.trim().slice(0,24);
+        if(crime == "")
+          crime = "OO죄";
+        else if(crime[crime.length - 1]!='죄')
+          crime = crime+"죄"
+        boxes[0].text = inputs[0].value.trim().slice(0,9);
+        boxes[1].text = inputs[1].value.trim().slice(0,9);
+        boxes[2].text = ` 고소인은 피고소인을 [${crime}]로 고소하오니 처벌하여 주시기 바랍니다.`;
+        boxes[3].text = inputs[3].value.trim().slice(0,500);
+        boxes[4].text = now.getFullYear().toString();
+        boxes[5].text = String(now.getMonth()+1).padStart(2,'0');
+        boxes[6].text = String(now.getDate()).padStart(2,'0');
+        boxes[7].text = boxes[0].text;
+        return boxes;
+      }
+
+      function redraw() {
+        if (img.complete && img.naturalWidth !== 0 && !canvas.getAttribute('data-img-error')) {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        } else if (canvas.getAttribute('data-img-error')) {
+            // 이미 onerror에서 처리됨
+        } else if (!img.src) {
+            ctx.fillStyle = '#cccccc';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#000000';
+            ctx.font = '20px Malgun Gothic';
+            ctx.textAlign = 'center';
+            ctx.fillText('이미지 경로를 설정해주세요.', canvas.width / 2, canvas.height / 2);
+        }
+        const boxes = getBoxes();
+        drawTextsInBoxes(ctx, boxes);
+        updateSaveButton();
+      }
+
+      img.onload = () => {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        canvas.removeAttribute('data-img-error');
+        redraw();
+      };
+
+      inputs.forEach(i => i.addEventListener('input', redraw));
+      consentCheckbox.addEventListener('change', updateSaveButton);
+
+      saveBtn.addEventListener('click', () => {
+        if (canvas.width === 0 || canvas.height === 0 || canvas.getAttribute('data-img-error')) {
+            alert("캔버스가 준비되지 않아 이미지를 저장할 수 없습니다. 이미지가 제대로 로드되었는지 확인해주세요.");
+            return;
+        }
+        const link = document.createElement('a');
+        link.download = 'edited_image.png';
+        try {
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        } catch (e) {
+            console.error("캔버스 데이터 URL 생성 실패:", e);
+            alert("이미지 저장에 실패했습니다. 콘솔을 확인해주세요.");
+        }
+      });
+
+      // 도움말 버튼 클릭 시 (임시로 alert 사용)
+      if(helpBtn) {
+          helpBtn.addEventListener('click', () => {
+              createModal(
+  '⚠이용안내',
+  '본 콘텐츠는 단순 재미용 및 교육용으로서 \n“고소장 작성 경험”을 제공하는 것이 목표입니다.\n\n' +
+  '※ 이 양식은 “경찰청 민원포털”의 실제 고소장 표준 서식에서 최소한의 정보만 발췌해 만든 샘플이며, 실제 사용용이 아닙니다.\n\n' +
+  '※ 실제 주로 사용되는 양식은 초기 화면의 “실제 고소장 표준서식” 메뉴에서 확인할 수 있습니다.\n\n' +
+  '부적절한 용도로의 악용을 금지합니다.'
+);
+
+          });
+      }
+
+      updateSaveButton();
+      if (!img.src) {
+          canvas.width = 982;
+          canvas.height = 893;
+          redraw();
+      } else if (img.complete && img.naturalWidth === 0 && !canvas.getAttribute('data-img-error')) {
+          redraw();
+      }
+      redraw();
+    };
+  </script>
+</body>
+</html>

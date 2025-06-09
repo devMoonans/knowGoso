@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>너고소</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', 'Noto Sans KR', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .know-title-en {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 900;
+            font-size: 5rem;
+            letter-spacing: -0.025em;
+            background: linear-gradient(to right, #DE3163, #D8B4FE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            display: inline-block;
+            line-height: 1;
+        }
+        .know-title-ko {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-weight: 700;
+            font-size: 2.5rem;
+            color: #D8B4FE;
+            margin-left: -0.05em;
+            vertical-align: baseline;
+            line-height: 1;
+            display: inline-block;
+        }
+        .know-highlight {
+            font-weight: 900;
+            color: #DE3163;
+        }
+
+        @media (max-width: 640px) {
+            .know-title-en {
+                font-size: 3.5rem;
+            }
+            .know-title-ko {
+                font-size: 1.8rem;
+            }
+        }
+
+        .btn-primary {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #5B21B6;
+            font-weight: 600;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .btn-primary:hover {
+            background-color: white;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            transform: translateY(-2px) scale(1.02);
+        }
+        .btn-secondary {
+            background-color: #F472B6;
+            color: white;
+            font-weight: 600;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 15px rgba(236, 72, 150, 0.3);
+        }
+        .btn-secondary:hover {
+            background-color: #EC4899;
+            box-shadow: 0 6px 20px rgba(236, 72, 150, 0.4);
+            transform: translateY(-2px) scale(1.02);
+        }
+        .external-link-button {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .external-link-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+        .external-link-button:active {
+            transform: translateY(0px);
+        }
+        .external-link-button svg {
+            width: 1em;
+            height: 1em;
+            margin-left: 0.5em;
+        }
+
+        .title-help-button {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-left: 12px;
+        }
+        .title-help-button:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+            transform: rotate(15deg) scale(1.1);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-700 via-purple-700 to-pink-700 flex items-center justify-center min-h-screen text-white p-4">
+    <div class="text-center p-6 sm:p-10 bg-black/20 backdrop-blur-xl rounded-2xl shadow-2xl max-w-lg mx-auto w-full">
+
+        <div class="flex items-baseline justify-center mb-6 sm:mb-8">
+            <h1 class="inline">
+                <span class="know-title-en">KNOW</span><span class="know-title-ko"><span class="know-highlight">너</span>고소</span>
+            </h1>
+            <button id="mainHelpBtn" class="title-help-button" title="도움말">?</button>
+        </div>
+
+        <p class="text-base sm:text-lg mb-8 sm:mb-10 text-purple-200/90">
+            고소장 작성을 체험해보세요!
+        </p>
+
+        <div class="space-y-4">
+            <button
+                onclick="location.href='assets/law.html'"
+                class="w-full px-6 py-3 sm:px-8 sm:py-4 btn-primary text-base sm:text-lg transition-all duration-300 ease-in-out">
+                대한민국 형법 살펴보기
+            </button>
+            <button
+                onclick="location.href='assets/plaint.html'"
+                class="w-full px-6 py-3 sm:px-8 sm:py-4 btn-secondary text-base sm:text-lg transition-all duration-300 ease-in-out">
+                간단 고소장 작성해보기
+            </button>
+
+        <div class="flex gap-3 mt-4">
+            <a href="javascript:void(0);"
+                onclick="alert('경찰청 민원포털 사이트로 이동합니다. [수사]탭에서 고소장 양식을 확인할 수 있습니다.' ); window.open('https://www.law.go.kr/%EB%B2%95%EB%A0%B9/%ED%98%95%EB%B2%95', '_blank');"
+                class="external-link-button flex-1">
+                실제 고소장 표준서식
+                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+            </a>
+            <a href="javascript:void(0);"
+                onclick="alert('법률구조공단 사이트로 이동합니다. 다양한 소송 법률서식을 제공합니다.'); window.open('https://www.klac.or.kr/legalinfo/legalFrm.do', '_blank');"
+                class="external-link-button flex-1">
+                다양한 법률서식
+                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+            </a>
+        </div>
+    </div>
+    <script>
+      function createModal(title, message, options = {}) {
+            const { confirmText = '확인', onClose, onConfirm } = options;
+
+            // --- Overlay Element ---
+            const overlay = document.createElement('div');
+            overlay.className = 'fixed inset-0 bg-black bg-opacity-80 backdrop-blur-lg flex items-center justify-center p-4 z-[9999] transition-opacity duration-500 ease-in-out';
+            // `bg-opacity-80`, `backdrop-blur-lg` 효과 강화, `duration-500` 오버레이 전환 속도 조정
+
+            // --- Modal Box ---
+            const box = document.createElement('div');
+            box.className = 'bg-white text-gray-800 rounded-3xl shadow-2xl p-7 md:p-10 w-full max-w-lg modal-animate-open transform'; // max-w-lg로 약간 넓힘, rounded-3xl, 패딩 증가
+            // `modal-animate-open` 열기 애니메이션 클래스 적용
+
+            // --- Close Button (X icon) ---
+            const closeButton = document.createElement('button');
+            closeButton.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            `;
+            closeButton.className = 'absolute top-6 right-6 text-gray-400 hover:text-red-500 close-button-animate'; // `close-button-animate` 클래스 추가, 아이콘 크기 및 위치 조정
+            closeButton.addEventListener('click', () => closeModal(false));
+
+            // --- Title ---
+            const h2 = document.createElement('h2');
+            h2.textContent = title;
+            h2.className = 'text-3xl md:text-4xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 text-center';
+            // 폰트 크기 및 두께 증가, 그라데이션 텍스트 효과 추가
+
+            // --- Message ---
+            const p = document.createElement('p');
+            message.split('\n').forEach((line, i, arr) => {
+                p.append(document.createTextNode(line));
+                if (i < arr.length - 1) p.append(document.createElement('br'));
+            });
+            p.className = 'text-base md:text-lg text-gray-600 mb-10 modal-content max-h-[45vh] overflow-y-auto px-2 text-center leading-relaxed selection:bg-purple-200';
+            // 텍스트 크기 증가, 마진 증가, `max-h` 조정, 선택 시 배경색 변경
+
+            // --- Button Container ---
+            const buttonContainer = document.createElement('div');
+            buttonContainer.className = 'flex justify-center mt-4';
+
+            // --- Confirm Button ---
+            const confirmBtn = document.createElement('button');
+            confirmBtn.textContent = confirmText;
+            confirmBtn.className = 'w-full max-w-sm px-10 py-4 bg-gradient-to-r from-purple-600 to-pink-500 text-white text-lg font-bold rounded-xl shadow-lg hover:from-purple-700 hover:to-pink-600 focus:outline-none focus:ring-4 focus:ring-pink-400 focus:ring-opacity-75 animated-button transform hover:-translate-y-1';
+            // 그라데이션 배경, 폰트 두께 증가, 패딩 증가, 호버 시 살짝 위로 이동 효과 추가
+
+            confirmBtn.addEventListener('click', () => closeModal(true));
+
+            // --- DOM Assembly ---
+            box.appendChild(closeButton);
+            box.appendChild(h2);
+            box.appendChild(p);
+            buttonContainer.appendChild(confirmBtn);
+            box.appendChild(buttonContainer);
+            overlay.appendChild(box);
+            document.body.appendChild(overlay);
+            document.body.style.overflow = 'hidden';
+
+            overlay.style.opacity = '0';
+            requestAnimationFrame(() => {
+                overlay.style.opacity = '1';
+            });
+
+
+            // --- Close Handler ---
+            function closeModal(isConfirmed) {
+                overlay.style.opacity = '0';
+                box.classList.remove('modal-animate-open');
+                box.classList.add('modal-animate-close');
+
+                setTimeout(() => {
+                    if (overlay.parentNode === document.body) {
+                         document.body.removeChild(overlay);
+                    }
+                    document.body.style.overflow = '';
+
+                    if (isConfirmed && typeof onConfirm === 'function') {
+                        onConfirm();
+                    }
+
+                    if (typeof onClose === 'function') {
+                        onClose(isConfirmed);
+                    }
+                }, 400); // 닫기 애니메이션 시간 (0.4s)
+            }
+
+            // --- Event Listener for Overlay Click ---
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    closeModal(false);
+                }
+            });
+
+            // --- Event Listener for Escape Key ---
+            let escapeKeyListenerActive = true;
+            function escapeKeyListener(e) {
+                if (escapeKeyListenerActive && e.key === 'Escape') {
+                    closeModal(false);
+                    escapeKeyListenerActive = false;
+                    document.removeEventListener('keydown', escapeKeyListener);
+                }
+            }
+            document.addEventListener('keydown', escapeKeyListener);
+
+            return {
+                close: () => closeModal(false)
+            };
+        }
+        const mainHelpBtn = document.getElementById('mainHelpBtn');
+        if (mainHelpBtn) {
+            mainHelpBtn.addEventListener('click', () => {
+            createModal(
+  '환영합니다!',
+  '이 페이지는 사람들이 법률을 보다 쉽고 흥미롭게 이해할 수 있도록 구성된 교육용 콘텐츠입니다.\n\n' +
+                '범죄별로 관련된 대한민국 형법 조문을 탐색할 수 있으며, 간단한 형식의 고소장 작성 체험을 할 수 있습니다.\n\n' +
+                '범죄 유형별로 형법 조문을 소개하고 고소장을 직접 작성해보는 경험을 제공함으로써, 법에 대한 경각심을 높이고 건강한 법 의식을 함양하는 데 목적이 있습니다.\n\n' +
+                '재밌게 즐겨주세요!\n'
+);
+            });
+        }
+    </script>
+</body>
+</html>
